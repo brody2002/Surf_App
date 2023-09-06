@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 <!DOCTYPE html>
 <html>
@@ -214,4 +215,293 @@
     })
 
 
+=======
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content ="width=device-width, initial-scale=10.">
+        <title>Surf Weather App</title>
+        <link rel="stylesheet" href="style.css"?>
+    </head>
+    <body>
+        <div class="card">
+            <div class="searchbar">
+                <div class="location">
+                    <input type="text" placeholder="enter location">
+                </div>
+                <button>
+                    <img src="images/search.png">
+                </button>
+            </div>
+            
+            <div class="not_found">
+                <p class = "error">Invalid Location</p>
+            </div>
+            <div class="Rows">
+                <div class="Conditions-Row1">
+                    <img src="images/tide.png" >
+                    <div>
+                        <p>Tide</p>
+                        <p>Extremes:</p>
+                    </div>
+                    
+                    <div class="Row1_Stats">
+                    
+                        <p class="Height0">0 ft</p>
+                        <p class="Type0">Low</p>
+                    </div>
+                    <div class="Row1_Stats"> 
+                        <p class="Height1">1 ft</p>
+                        <p class="Type1">Low</p>
+                        
+                    </div>
+                    <div class="Row1_Stats">
+
+                        <p class="Height2">2 ft</p>
+                        <p class="Type2">Low</p>
+                    </div>
+                    <div class="Row1_Stats">
+
+                        <p class="Height3">3 ft</p> 
+                        <p class="Type3">Low</p>
+                    </div>
+                    
+                </div>
+                <div class="Conditions-Row2">
+                    
+                    <img src="images/swell.png" >
+                    
+                    <div class="Swell_Title">Swell:</div>
+                    <div>
+                        <div class= Row2_Stats>
+                            <p>Height</p>
+                            <p class="swellHeight">3.3 ft</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class = "Row2_Stats">
+                            <p>Period</p>
+                            <p class="swellPeriod">10 secs</p>
+                        </div>
+                       
+                    </div>
+                    <div>
+                        <div class="Row2_Stats">
+                            <p>Direction</p>
+                            <p class="swellDirection">290</p>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="Conditions-Row3">
+                    <img src="images/wind.png" >
+                    <div class="Row3_Title">Wind:</div>
+                    <div class = "Row3_Stats">
+                        <p>Wind Speed</p>                        
+                        <p class="windSpeed">1 knot</p>    
+                    </div>
+                    <div>
+                        <div class = "Row3_Stats">
+                            <p>Wind Direction</p>   
+                            <p class="windDirection">0 degrees</p>                            
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+
+            </div>
+            
+            
+            
+        </div>
+        
+    </body>
+</html>
+
+<script>
+    
+
+    const apiKey = "e23771e8-2b25-11ee-8d52-0242ac130002-e237727e-2b25-11ee-8d52-0242ac130002";
+    const apiUrl = "https://api.stormglass.io/v2/weather/point";
+
+    const loc = document.querySelector(".location input")
+    const searchButton = document.querySelector(".searchbar button");
+    const params = 'swellHeight,swellDirection,swellPeriod,windDirection,windSpeed';
+
+    let date = new Date();
+    let currentTime = date.toJSON().slice(11,13);
+    // console.log(currentTime);
+    // console.log(date);
+    var lat = 0.0;
+    var lon = 0.0;
+
+
+    function error(){
+                    console.log("Invalid Location");
+                    document.querySelector(".not_found").style.display = "block";
+                    document.querySelector(".Conditions-Row3").style.width = "200px";
+                    document.querySelector(".Conditions-Row2").style.width = "200px";
+                    document.querySelector(".Conditions-Row1").style.width = "200px";
+                    const Row2_style = document.querySelectorAll(".Row2_Stats");
+                    for (var x = 0; x < Row2_style.length; x++)
+                        Row2_style[x].style.display = "none";
+                    const Row1_style = document.querySelectorAll(".Row1_Stats");
+                    for (var x = 0; x < Row1_style.length; x++)
+                        Row1_style[x].style.display = "none";
+                        const Row3_style = document.querySelectorAll(".Row3_Stats");
+                    for (var x = 0; x < Row3_style.length; x++)
+                        Row3_style[x].style.display = "none";
+    }
+
+    function findAddress(){
+        var url = "https://nominatim.openstreetmap.org/search?format=json&limit=3&q=" + loc.value;
+        fetch(url)
+                .then(responce => responce.json())
+                .then((jsonData) => {
+                console.log("CHECKING DATA: ",jsonData.length);
+                console.log("DATA: ",jsonData[0]);
+                if(jsonData.length > 0){
+                    console.log("LOCATION IS: ",jsonData[0].lat,jsonData[0].lon);
+                    lat = jsonData[0].lat;
+                    lon = jsonData[0].lon;
+                    document.querySelector(".not_found").style.display = "none";
+                    checkConditions(lat, lon);
+                }
+                else{
+                    console.log("error2");
+                    error();
+                    return;
+                }
+                
+
+
+
+
+
+        })
+
+
+
+        
+                
+        
+
+        
+
+    }
+    
+    async function checkConditions(x, y){
+        
+        
+        console.log("LAT AND LONG: ", x, " ", y)
+        fetch(`https://api.stormglass.io/v2/weather/point?lat=${x}&lng=${y}&params=${params}`, {
+        headers: {
+            'Authorization': 'e23771e8-2b25-11ee-8d52-0242ac130002-e237727e-2b25-11ee-8d52-0242ac130002'
+        }
+        }).then((response) => response.json())
+        .then((jsonData) => {
+            // console.log(jsonData);
+            
+            // console.log(jsonData.hours[Number(currentTime)]);
+    
+            const windSpeed = jsonData.hours[Number(currentTime)].windSpeed.icon;
+            const windDirection = jsonData.hours[Number(currentTime)].windDirection.icon;
+            console.log("INFORMATION: ",jsonData)
+           
+            console.log("SwellHeight: ",jsonData.hours[Number(currentTime)].swellHeight)
+            if(jsonData.hours[Number(currentTime)].swellHeight == undefined){
+                console.log("error3");
+                error();
+                return;
+            }
+            console.log("DID IT CONTINUE:")
+            const swellHeight = jsonData.hours[Number(currentTime)].swellHeight.icon;
+            const swellPeriod = jsonData.hours[Number(currentTime)].swellPeriod.icon;
+            const swellDirection = jsonData.hours[Number(currentTime)].swellDirection.icon;
+            
+            // console.log(windSpeed);
+            document.querySelector(".windSpeed").innerHTML = (windSpeed * 2.237).toFixed(1) + "mph";
+            document.querySelector(".windDirection").innerHTML = windDirection + " °";
+            document.querySelector(".swellHeight").innerHTML = (3.281 * swellHeight).toFixed(1) + "Ft";
+            document.querySelector(".swellDirection").innerHTML = swellDirection + " °";
+            document.querySelector(".swellPeriod").innerHTML = swellPeriod + "secs";
+
+            
+
+        }); 
+        checkConditions2(x,y);
+        
+       
+    }
+    async function checkConditions2(x,y){
+        //TIDES
+        fetch(`https://api.stormglass.io/v2/tide/extremes/point?lat=${x}&lng=${y}`, {
+            headers: {
+                'Authorization': 'e23771e8-2b25-11ee-8d52-0242ac130002-e237727e-2b25-11ee-8d52-0242ac130002'
+            }
+            }).then((response) => response.json())
+            .then((jsonData) => {
+                console.log(jsonData);
+                const tide0_height = jsonData.data[0].height;
+                const tide0_type = jsonData.data[0].type;
+                const tide0_time = jsonData.data[0].time.slice(11, 16);
+                
+                const tide1_height = jsonData.data[1].height;
+                const tide1_type = jsonData.data[1].type;
+                const tide1_time = jsonData.data[1].time.slice(11, 16);
+                
+                const tide2_height = jsonData.data[2].height;
+                const tide2_type = jsonData.data[2].type;
+                const tide2_time = jsonData.data[2].time.slice(11, 16);
+                
+                const tide3_height = jsonData.data[3].height;
+                const tide3_type = jsonData.data[3].type;
+                const tide3_time = jsonData.data[3].time.slice(11, 16);
+
+                document.querySelector(".Height0").innerHTML = (tide0_height * 3.281).toFixed(2) + " ft";
+                document.querySelector(".Height1").innerHTML = (tide1_height * 3.281).toFixed(2) + " ft";
+                document.querySelector(".Height2").innerHTML = (tide2_height * 3.281).toFixed(2) + " ft";
+                document.querySelector(".Height3").innerHTML = (tide3_height * 3.281).toFixed(2) + " ft";
+
+                document.querySelector(".Type0").innerHTML = tide0_type;
+                document.querySelector(".Type1").innerHTML = tide1_type;
+                document.querySelector(".Type2").innerHTML = tide2_type;
+                document.querySelector(".Type3").innerHTML = tide3_type;
+                
+
+
+                
+            });
+
+            {/*ANIMATIONS*/
+                document.querySelector(".Conditions-Row3").classList.add('fadeIn');
+                document.querySelector(".Conditions-Row2").classList.add('fadeIn');
+                document.querySelector(".Conditions-Row1").classList.add('fadeIn');
+                document.querySelector(".Conditions-Row3").style.width = "650px";
+                document.querySelector(".Conditions-Row2").style.width = "650px";
+                document.querySelector(".Conditions-Row1").style.width = "650px";
+                const Row2_style = document.querySelectorAll(".Row2_Stats");
+                for (var x = 0; x < Row2_style.length; x++)
+                    Row2_style[x].style.display = "block";
+                const Row1_style = document.querySelectorAll(".Row1_Stats");
+                for (var x = 0; x < Row1_style.length; x++)
+                    Row1_style[x].style.display = "block";
+                    const Row3_style = document.querySelectorAll(".Row3_Stats");
+                for (var x = 0; x < Row3_style.length; x++)
+                    Row3_style[x].style.display = "block";
+
+                
+            }
+    }
+    searchButton.addEventListener("click",()=>{
+        console.log(loc.value);
+        // checkConditions(lat.value, long.value);
+        findAddress(loc.value);
+        
+    })
+
+
+>>>>>>> 4e2f4d2 (ADDED LOCATION API SO THAT INPUTS AREN'T COORDINATES)
 </script>
