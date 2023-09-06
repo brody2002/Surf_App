@@ -1,0 +1,20 @@
+Swell Direction: Where the swell is coming from (icons for arrows)
+Swell Period: Distance between waves (measured in seconds)
+Swell Height: Measuered in metres from the app but convert to feet and inches
+
+
+secondarySwellPeriod	Direction of secondary swell waves. 0° indicates swell coming from north
+secondarySwellDirection	Height of secondary swell waves in meters
+secondarySwellHeight	Period of secondary swell waves in seconds
+
+
+wind in knots: (kts) and direction
+
+TIDE:
+either low or high
+height of tider (app in meters)
+time the tides appears. 
+
+
+CONVERT BEACH NAME TO CORIDINATES FOR INPUT
+
